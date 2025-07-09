@@ -16,7 +16,7 @@ export const verifyToken = (req, res, next) => {
 };
 
 // Middleware untuk memeriksa user atau admin
-export const verifyUser = (req, res, next) => {
+export const verifyUSer = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.role === 'admin') {
       return next();
