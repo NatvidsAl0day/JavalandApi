@@ -6,7 +6,6 @@
   ],
   "routes": [
     { "src": "/api/routes/(.*)", "dest": "api/routes/$1.js" },
-    // lalu catch-all terakhir kalau perlu
     { "src": "/(.*)",            "dest": "api/index.js" }
   ]
 }
