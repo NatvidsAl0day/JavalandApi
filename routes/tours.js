@@ -1,23 +1,32 @@
 import express from 'express';
-import { createTour, updateTour, deleteTour, getAllTour, getSingleTour, getTourBySearch, getFeaturedTour, getTourCount, getAllOutTour } from '../controller/tourController.js';
-import { verifyAdmin, verifyUSer } from '../utils/verifyToken.js';
+import { 
+  createTour, 
+  updateTour, 
+  deleteTour, 
+  getAllTour, 
+  getSingleTour, 
+  getTourBySearch, 
+  getFeaturedTour, 
+  getTourCount, 
+  getAllOutTour 
+} from '../controller/tourController.js';
+import { verifyAdmin } from '../utils/verifyToken.js'; // hapus verifyUser kalau tidak dipakai
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/', verifyAdmin, createTour)
-router.put('/:id', updateTour)
-router.delete('/:id', deleteTour)
+// Proteksi semua perubahan data
+router.post('/', verifyAdmin, createTour);
+router.put('/:id', verifyAdmin, updateTour);
+router.delete('/:id', verifyAdmin, deleteTour);
 
-// Spesifik lebih dahulu
-router.get('/allout/out', getAllOutTour)
-router.get('/search/getTourBySearch', getTourBySearch)
-router.get('/search/getFeaturedTours', getFeaturedTour)
-router.get('/search/getTourCount', getTourCount)
+// Pencarian & filter (specific)
+router.get('/allout', getAllOutTour);
+router.get('/search/getTourBySearch', getTourBySearch);
+router.get('/search/getFeaturedTours', getFeaturedTour);
+router.get('/search/getTourCount', getTourCount);
 
-// Yang umum
-router.get('/', getAllTour)           // <= ini sebelum :id
-router.get('/:id', getSingleTour)
-
-
+// Listing umum & detail
+router.get('/', getAllTour);
+router.get('/:id', getSingleTour);
 
 export default router;
