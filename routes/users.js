@@ -1,21 +1,25 @@
-import express from 'express'
-import { updateUser, deleteUser, getSingleUser, getAllUser } from '../controller/userContoller.js'
-import { verifyUSer, verifyAdmin } from '../utils/verifyToken.js'
+// routes/users.js
+import express from 'express';
+import {
+  updateUser,
+  deleteUser,
+  getSingleUser,
+  getAllUser
+} from '../controller/userController.js';    // pastikan ejaannya benar
+import { verifyUser, verifyAdmin } from '../utils/verifyToken.js';
 
+const router = express.Router();
 
+// Update User (user sendiri atau admin)
+router.put('/:id', verifyUser, updateUser);
 
-const router = express.Router()
+// Delete User (user sendiri atau admin)
+router.delete('/:id', verifyUser, deleteUser);
 
-router.put('/:id', verifyUSer, updateUser)
+// Get Single User (user sendiri atau admin)
+router.get('/:id', verifyUser, getSingleUser);
 
-//delete Tour
-router.delete('/:id', verifyUSer, deleteUser)
-
-//get Single Tour
-router.get('/:id', verifyUSer, getSingleUser)
-
-
-//get All Tour
-router.get('/', verifyAdmin, getAllUser)
+// Get All Users (hanya admin)
+router.get('/', verifyAdmin, getAllUser);
 
 export default router;
