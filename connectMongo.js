@@ -1,5 +1,6 @@
 // connectMongo.js
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -7,10 +8,9 @@ dotenv.config();
 mongoose.set('strictQuery', false);
 
 /**
- * Establishes a connection to MongoDB using MONGO_URI from environment variables.
- * Logs success or failure to the console.
+ * Establish a connection to MongoDB using MONGO_URI from environment variables.
  */
-export const connectMongo = async () => {
+const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
@@ -19,6 +19,8 @@ export const connectMongo = async () => {
     console.log('✅ MongoDB connected successfully');
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error.message);
-    process.exit(1); // Exit process with failure
+    process.exit(1);
   }
 };
+
+export default connectDB;
