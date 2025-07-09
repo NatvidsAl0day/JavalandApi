@@ -17,6 +17,8 @@ import { dirname, resolve } from 'path';
 const router = express.Router();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log('Looking for controller at:', resolve(__dirname, '../../controller/userController.js'));
+console.log('Current working directory:', process.cwd());
+console.log('Path to userController:', require.resolve('../controller/userController.js'));
 
 // Update User (user sendiri atau admin)
 router.put('/:id', verifyUser, updateUser);
