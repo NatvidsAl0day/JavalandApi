@@ -9,12 +9,14 @@ import {
 import { verifyUser, verifyAdmin } from '../utils/verifyToken.js';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
-const __dirname = dirname(fileURLToPath(import.meta.url));
-console.log('users.js running at:', __dirname);
-console.log('looking for controller at:', resolve(__dirname, '../controller/userController.js'));
+
+
+
 
 
 const router = express.Router();
+const __dirname = dirname(fileURLToPath(import.meta.url));
+console.log('Looking for controller at:', resolve(__dirname, '../../controller/userController.js'));
 
 // Update User (user sendiri atau admin)
 router.put('/:id', verifyUser, updateUser);
