@@ -4,35 +4,20 @@ import { verifyAdmin, verifyUSer } from '../utils/verifyToken.js';
 
 const router = express.Router()
 
-// Buat Tour Baru
 router.post('/', verifyAdmin, createTour)
-
-//Update Tour
-// router.put('/:id', verifyAdmin, updateTour)
 router.put('/:id', updateTour)
-
-//delete Tour
-// router.delete('/:id', verifyAdmin, deleteTour)
 router.delete('/:id', deleteTour)
 
-//get Single Tour
+// Spesifik lebih dahulu
+router.get('/allout/out', getAllOutTour)
+router.get('/search/getTourBySearch', getTourBySearch)
+router.get('/search/getFeaturedTours', getFeaturedTour)
+router.get('/search/getTourCount', getTourCount)
+
+// Yang umum
+router.get('/', getAllTour)           // <= ini sebelum :id
 router.get('/:id', getSingleTour)
 
-
-//get All Tour
-router.get('/', getAllTour)
-
-// get All out Tour
-router.get('/allout/out', getAllOutTour)
-
-//get tour by pencarian
-router.get('/search/getTourBySearch', getTourBySearch)
-
-//get featured
-router.get('/search/getFeaturedTours', getFeaturedTour)
-
-// get Tour Count
-router.get('/search/getTourCount', getTourCount)
 
 
 export default router;
