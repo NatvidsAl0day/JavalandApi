@@ -5,7 +5,7 @@ import {
   deleteUser,
   getSingleUser,
   getAllUser
-} from '../controller/userController.js';    // pastikan ejaannya benar
+} from '../../controller/userController.js';    // pastikan ejaannya benar
 import { verifyUser, verifyAdmin } from '../utils/verifyToken.js';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
