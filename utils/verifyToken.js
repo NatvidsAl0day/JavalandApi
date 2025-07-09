@@ -1,16 +1,21 @@
 // utils/verifyToken.js
 import jwt from 'jsonwebtoken';
 
+
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.accessToken;
+  // Cek header Authorization: Bearer <token>
+  const authHeader = req.headers['authorization'];
+  const token = authHeader?.split(' ')[1] || req.cookies.accessToken;
+
   if (!token) {
-    return res.status(401).json({ success: false, message: 'You Not Authorize' });
+    return res.status(401).json({ success: false, message: 'Not authorized' });
   }
-  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, payload) => {
     if (err) {
-      return res.status(401).json({ success: false, message: 'Expired TOKEN' });
+      return res.status(401).json({ success: false, message: 'Token invalid/expired' });
     }
-    req.user = user;
+    req.user = payload; // { id, role, iat, exp }
     next();
   });
 };
