@@ -6,7 +6,7 @@ import {
   getSingleUser,
   getAllUser
 } from '../controller/userController.js';
-import { verifyUser, verifyAdmin } from '../utils/verifyToken.js';
+import { verifyUSer, verifyAdmin } from '../utils/verifyToken.js';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 
