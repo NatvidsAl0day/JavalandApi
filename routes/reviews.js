@@ -3,6 +3,6 @@ import { createReview } from '../controller/reviewsController.js';
 import { verifyUSer, verifyToken } from '../utils/verifyToken.js';
 const router = express.Router()
 
-router.post('/:tourId', verifUSer, createReview)
+router.post('/:tourId', verifyUSer, createReview)
 
 export default router;
