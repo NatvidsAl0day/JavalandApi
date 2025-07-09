@@ -96,7 +96,7 @@ export const getAllUser = async (req, res) => {
 
         res.status(200).json({
             success:true,
-            count: tours.length,
+            count: users.length,
             message:'Succesfully',
             data: users
         })
