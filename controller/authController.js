@@ -36,74 +36,42 @@ export const register = async(req,res) => {
 
 }
 
-export const login = async(req,res) => {
-    const email = req.body.email
+export const login = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(404).json({ success: false, message: 'User tidak ada' });
 
+    const isValid = await bcrypt.compare(req.body.password, user.password);
+    if (!isValid) return res.status(401).json({ success: false, message: 'Password salah' });
 
-    try {
+    const { password, ...rest } = user._doc;
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: '15d' }
+    );
 
-        const user = await User.findOne({email})
+    // Kirim cookie + JSON payload
+    res
+      .cookie('accessToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // hanya HTTPS pada production
+        sameSite: 'none',                              // diperlukan kalau lintas domain
+        maxAge: 15 * 24 * 60 * 60 * 1000               // 15 hari
+      })
+      .status(200)
+      .json({
+        success: true,
+        token,
+        data: rest,
+        role: user.role
+      });
 
-        //Jika User tidak ada
-        if (!user) {
-            return res.status(404).json({
-                succes:false,
-                message:'User Tidak ada'
-            })
-        }
-
-        //Perbandingan Password
-        const checkCorrectPassword = await bcrypt.compare(req.body.password, user.password)
-
-        //Jika Password Salah
-        if (!checkCorrectPassword) {
-            return res.status(401).json({
-                succes:false,
-                message:'passwod salah'
-
-            })
-        }
-
-        const { password, role, ...rest } = user._doc
-        
-        //jwt token
-        const token = jwt.sign({
-            id: user._id,
-            role: user.role
-        }, process.env.JWT_SECRET_KEY,{ expiresIn: "15d" });
-
-
-        // set token cookies
-        res.cookie('accessToken', token, {
-            httpOnly: true,
-            expires: token.expiresIn
-        }).status(200).json({
-            // success:true,
-            token,
-            data: { ...rest },
-            role
-        })
-
-        // res.cookie('accessToken', token, {
-        //     httpOnly: true,
-        //     expires: token.expiresIn
-        // }).status(200).json({
-        //     success:true,
-        //     token,
-        //     data: { ...rest },
-        //     role
-        // })
-
-    } catch (err) {
-        res.status(401).json({
-            succes:false,
-            message:'Gagal Login'
-
-        })
-
-    }
-    
-}
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Gagal login' });
+  }
+};
 
 export const registerAdmin = async(req,res) => {
 
